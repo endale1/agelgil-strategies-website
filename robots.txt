@@ -1,0 +1,34 @@
+# Agelgil Strategies - Robots.txt
+# This file tells search engines which pages to crawl and which to avoid
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /.well-known/
+Disallow: /cgi-bin/
+Disallow: /tmp/
+Disallow: /logs/
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+# Sitemap location (create this file later)
+Sitemap: https://agelgilstrategies.com/sitemap.xml
+
+# Crawl delay (optional - helps prevent server overload)
+Crawl-delay: 1
+
