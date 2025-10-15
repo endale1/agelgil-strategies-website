@@ -911,6 +911,13 @@
         // Make closeModal global
         window.closeModal = closeModal;
 
+        // Encode form data for Netlify
+        function encode(data) {
+            return Object.keys(data)
+                .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+                .join("&");
+        }
+
         // Wait for page to load
         window.addEventListener('load', function() {
             console.log('Page loaded, attaching form handler...');
@@ -958,27 +965,31 @@
 
                     console.log('Submitting to Netlify...');
 
-                    // Submit to Netlify
-                    const formData = new FormData(form);
+                    // Prepare data for Netlify
+                    const formDataObj = {
+                        "form-name": "contact",
+                        "name": name,
+                        "email": email,
+                        "countryCode": countryCode,
+                        "phone": phone,
+                        "message": message
+                    };
 
                     // Log form data for debugging
-                    console.log('Form data being sent:');
-                    for (let [key, value] of formData.entries()) {
-                        console.log(`  ${key}: ${value}`);
-                    }
+                    console.log('Form data being sent:', formDataObj);
 
                     fetch('/', {
                         method: 'POST',
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: new URLSearchParams(formData).toString()
+                        body: encode(formDataObj)
                     })
                     .then(response => {
                         console.log('Response status:', response.status);
                         console.log('Response OK:', response.ok);
-                        if (response.ok) {
+                        if (response.ok || response.status === 200) {
                             console.log('✅ Form submitted successfully to Netlify!');
                         } else {
-                            console.warn('⚠️ Response not OK, but continuing...');
+                            console.warn('⚠️ Response status:', response.status);
                         }
                         // Show modal
                         showSuccessModal();
@@ -987,7 +998,7 @@
                     })
                     .catch((error) => {
                         console.error('❌ Error submitting form:', error);
-                        // Still show modal even if Netlify fails (for local testing)
+                        // Still show modal
                         showSuccessModal();
                         form.reset();
                     })
