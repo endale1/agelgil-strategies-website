@@ -345,17 +345,23 @@ function isValidPhone(phone) {
     return /^[0-9]{6,15}$/.test(cleanPhone);
 }
 
-// Form submission handler - COMPLETELY REWRITTEN
+// Form submission handler - SIMPLIFIED AND DIRECT
 if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
+    // Remove any existing listeners
+    const newForm = contactForm.cloneNode(true);
+    contactForm.parentNode.replaceChild(newForm, contactForm);
+    const form = document.getElementById('contactForm');
+
+    form.addEventListener('submit', function(e) {
         // ALWAYS prevent default
         e.preventDefault();
         e.stopPropagation();
 
         console.log('=== FORM SUBMISSION STARTED ===');
+        console.log('Button clicked, form submitting...');
 
         // Check honeypot (spam protection)
-        const honeypot = contactForm.querySelector('input[name="bot-field"]');
+        const honeypot = form.querySelector('input[name="bot-field"]');
         if (honeypot && honeypot.value) {
             console.log('Spam detected - aborting');
             return false;
@@ -391,9 +397,12 @@ if (contactForm) {
         const btnLoading = submitBtn ? submitBtn.querySelector('.btn-loading') : null;
 
         if (submitBtn) {
+            console.log('Disabling button...');
             if (btnText) btnText.style.display = 'none';
             if (btnLoading) btnLoading.style.display = 'inline';
             submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.7';
+            submitBtn.style.cursor = 'not-allowed';
         }
 
         // Record submission for rate limiting
@@ -419,25 +428,38 @@ if (contactForm) {
             }
 
             // Reset form
-            if (contactForm) {
-                contactForm.reset();
+            if (form) {
+                form.reset();
             }
             clearErrors();
 
             // Reset button state
             if (submitBtn) {
+                console.log('Re-enabling button...');
                 if (btnText) btnText.style.display = 'inline';
                 if (btnLoading) btnLoading.style.display = 'none';
                 submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
             }
 
             console.log('=== FORM SUBMISSION COMPLETE ===');
         }, 1500);
 
         return false;
-    });
+    }, true); // Use capture phase
+
+    // Also add click handler to button as backup
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) {
+        submitBtn.addEventListener('click', function(e) {
+            console.log('=== BUTTON CLICKED ===');
+            console.log('Button is responsive!');
+        }, true);
+    }
 
     console.log('Form submit handler attached successfully');
+    console.log('Submit button:', submitBtn);
 } else {
     console.error('ERROR: Contact form not found!');
 }
