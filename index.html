@@ -961,20 +961,32 @@
                     // Submit to Netlify
                     const formData = new FormData(form);
 
+                    // Log form data for debugging
+                    console.log('Form data being sent:');
+                    for (let [key, value] of formData.entries()) {
+                        console.log(`  ${key}: ${value}`);
+                    }
+
                     fetch('/', {
                         method: 'POST',
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: new URLSearchParams(formData).toString()
                     })
-                    .then(() => {
-                        console.log('Form submitted successfully to Netlify!');
+                    .then(response => {
+                        console.log('Response status:', response.status);
+                        console.log('Response OK:', response.ok);
+                        if (response.ok) {
+                            console.log('✅ Form submitted successfully to Netlify!');
+                        } else {
+                            console.warn('⚠️ Response not OK, but continuing...');
+                        }
                         // Show modal
                         showSuccessModal();
                         // Reset form
                         form.reset();
                     })
                     .catch((error) => {
-                        console.error('Error submitting form:', error);
+                        console.error('❌ Error submitting form:', error);
                         // Still show modal even if Netlify fails (for local testing)
                         showSuccessModal();
                         form.reset();
