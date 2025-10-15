@@ -345,73 +345,102 @@ function isValidPhone(phone) {
     return /^[0-9]{6,15}$/.test(cleanPhone);
 }
 
-contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Always prevent default submission
-    console.log('Form submitted');
+// Form submission handler - COMPLETELY REWRITTEN
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        // ALWAYS prevent default
+        e.preventDefault();
+        e.stopPropagation();
 
-    // Check honeypot (spam protection)
-    const honeypot = contactForm.querySelector('input[name="bot-field"]');
-    if (honeypot && honeypot.value) {
-        console.log('Spam detected');
-        return; // Silent fail for bots
-    }
+        console.log('=== FORM SUBMISSION STARTED ===');
 
-    // Validate form
-    console.log('Validating form...');
-    if (!validateForm()) {
-        console.log('Validation failed');
-        return;
-    }
-    console.log('Validation passed');
-
-    // Check rate limiting
-    if (!rateLimiter.canSubmit()) {
-        console.log('Rate limit exceeded');
-        const remaining = rateLimiter.getRemainingTime();
-        const rateLimitMsg = document.getElementById('rateLimitMessage');
-        rateLimitMsg.textContent = `Please wait ${remaining} seconds before sending another message.`;
-        rateLimitMsg.style.display = 'block';
-        setTimeout(() => {
-            rateLimitMsg.style.display = 'none';
-        }, 3000);
-        return;
-    }
-
-    // Show loading state
-    console.log('Showing loading state...');
-    const submitBtn = document.getElementById('submitBtn');
-    const btnText = submitBtn.querySelector('.btn-text');
-    const btnLoading = submitBtn.querySelector('.btn-loading');
-
-    if (btnText && btnLoading) {
-        btnText.style.display = 'none';
-        btnLoading.style.display = 'inline';
-    }
-    submitBtn.disabled = true;
-
-    // Record submission for rate limiting
-    rateLimiter.recordSubmission();
-
-    // Simulate form submission (for testing)
-    // In production, this will be handled by Netlify
-    console.log('Starting timeout for modal...');
-    setTimeout(() => {
-        console.log('Timeout complete, showing modal...');
-        // Show success modal
-        showModal();
-
-        // Reset form
-        contactForm.reset();
-        clearErrors();
-
-        // Reset button state
-        if (btnText && btnLoading) {
-            btnText.style.display = 'inline';
-            btnLoading.style.display = 'none';
+        // Check honeypot (spam protection)
+        const honeypot = contactForm.querySelector('input[name="bot-field"]');
+        if (honeypot && honeypot.value) {
+            console.log('Spam detected - aborting');
+            return false;
         }
-        submitBtn.disabled = false;
-    }, 1500);
-});
+
+        // Validate form
+        console.log('Validating form...');
+        if (!validateForm()) {
+            console.log('Validation FAILED');
+            return false;
+        }
+        console.log('Validation PASSED');
+
+        // Check rate limiting
+        if (!rateLimiter.canSubmit()) {
+            console.log('Rate limit exceeded');
+            const remaining = rateLimiter.getRemainingTime();
+            const rateLimitMsg = document.getElementById('rateLimitMessage');
+            if (rateLimitMsg) {
+                rateLimitMsg.textContent = `Please wait ${remaining} seconds before sending another message.`;
+                rateLimitMsg.style.display = 'block';
+                setTimeout(() => {
+                    rateLimitMsg.style.display = 'none';
+                }, 3000);
+            }
+            return false;
+        }
+
+        // Show loading state
+        console.log('Showing loading state...');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = submitBtn ? submitBtn.querySelector('.btn-text') : null;
+        const btnLoading = submitBtn ? submitBtn.querySelector('.btn-loading') : null;
+
+        if (submitBtn) {
+            if (btnText) btnText.style.display = 'none';
+            if (btnLoading) btnLoading.style.display = 'inline';
+            submitBtn.disabled = true;
+        }
+
+        // Record submission for rate limiting
+        rateLimiter.recordSubmission();
+
+        // Show modal after delay
+        console.log('Setting timeout for modal...');
+        setTimeout(function() {
+            console.log('=== SHOWING MODAL NOW ===');
+
+            // Show success modal
+            const modal = document.getElementById('successModal');
+            if (modal) {
+                console.log('Modal element found!');
+                modal.style.display = 'flex';
+                modal.style.visibility = 'visible';
+                modal.style.opacity = '1';
+                modal.classList.add('show');
+                console.log('Modal should be visible now');
+            } else {
+                console.error('ERROR: Modal element NOT FOUND!');
+                alert('Thank you! Your message has been sent successfully. We\'ll get back to you soon.');
+            }
+
+            // Reset form
+            if (contactForm) {
+                contactForm.reset();
+            }
+            clearErrors();
+
+            // Reset button state
+            if (submitBtn) {
+                if (btnText) btnText.style.display = 'inline';
+                if (btnLoading) btnLoading.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+
+            console.log('=== FORM SUBMISSION COMPLETE ===');
+        }, 1500);
+
+        return false;
+    });
+
+    console.log('Form submit handler attached successfully');
+} else {
+    console.error('ERROR: Contact form not found!');
+}
 
 // Real-time validation
 document.getElementById('name').addEventListener('blur', function() {
