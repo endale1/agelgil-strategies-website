@@ -116,21 +116,40 @@
             z-index: 99999 !important;
         }
 
-        /* Ensure submit button is clickable */
-        #submitBtn, .btn, button[type="submit"] {
+        /* Ensure submit button is clickable - MAXIMUM PRIORITY */
+        button, .btn, #submitBtn, button[type="submit"],
+        #submitBtn *, .btn *, button[type="submit"] * {
             pointer-events: auto !important;
             cursor: pointer !important;
             position: relative !important;
-            z-index: 10 !important;
+            z-index: 1000 !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+        }
+
+        #submitBtn {
+            display: inline-block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
         #submitBtn:hover {
             opacity: 0.9 !important;
+            transform: scale(1.02) !important;
+        }
+
+        #submitBtn:active {
+            transform: scale(0.98) !important;
         }
 
         #submitBtn:disabled {
             opacity: 0.7 !important;
             cursor: not-allowed !important;
+        }
+
+        /* Ensure form doesn't block button */
+        form, .contact-form {
+            pointer-events: auto !important;
         }
     </style>
 </head>
@@ -695,7 +714,7 @@
                         Please wait before sending another message.
                     </div>
 
-                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <button type="submit" class="btn btn-primary" id="submitBtn" onclick="console.log('Button clicked via onclick!'); return true;">
                         <span class="btn-text">Send Message</span>
                         <span class="btn-loading" style="display:none;">Sending...</span>
                     </button>
@@ -744,5 +763,64 @@
     </footer>
 
     <script src="script.js"></script>
+
+    <!-- EMERGENCY BUTTON FIX - Direct inline script -->
+    <script>
+        console.log('=== EMERGENCY BUTTON FIX LOADED ===');
+
+        // Wait for DOM to be ready
+        window.addEventListener('load', function() {
+            console.log('Page fully loaded, checking button...');
+
+            const btn = document.getElementById('submitBtn');
+            console.log('Submit button element:', btn);
+
+            if (btn) {
+                console.log('Button found!');
+
+                // Test if button is visible and clickable
+                const rect = btn.getBoundingClientRect();
+                console.log('Button position:', {
+                    top: rect.top,
+                    left: rect.left,
+                    width: rect.width,
+                    height: rect.height
+                });
+
+                const styles = window.getComputedStyle(btn);
+                console.log('Button styles:', {
+                    display: styles.display,
+                    visibility: styles.visibility,
+                    opacity: styles.opacity,
+                    pointerEvents: styles.pointerEvents,
+                    zIndex: styles.zIndex,
+                    cursor: styles.cursor
+                });
+
+                // Check if anything is covering the button
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const elementAtPoint = document.elementFromPoint(centerX, centerY);
+                console.log('Element at button center:', elementAtPoint);
+
+                if (elementAtPoint !== btn && !btn.contains(elementAtPoint)) {
+                    console.warn('⚠️ WARNING: Something is covering the button!');
+                    console.warn('Covering element:', elementAtPoint);
+                    console.warn('Covering element classes:', elementAtPoint.className);
+                    console.warn('Covering element ID:', elementAtPoint.id);
+                }
+
+                // Add test click handler
+                btn.addEventListener('click', function(e) {
+                    console.log('✅ BUTTON CLICK DETECTED!');
+                    console.log('Click event:', e);
+                }, true);
+
+                console.log('✅ Emergency button fix complete');
+            } else {
+                console.error('❌ ERROR: Submit button not found!');
+            }
+        });
+    </script>
 </body>
 </html>
