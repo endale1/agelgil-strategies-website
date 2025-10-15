@@ -262,30 +262,36 @@ function validateForm() {
     const phone = document.getElementById('phone').value.trim();
     const message = document.getElementById('message').value.trim();
 
-    // Name validation
-    if (name.length < 2) {
-        showError('name', 'Name must be at least 2 characters long');
+    // Name validation (required)
+    if (!name || name.length < 2) {
+        showError('name', 'Name is required and must be at least 2 characters long');
         isValid = false;
     } else if (!/^[A-Za-z\s]+$/.test(name)) {
         showError('name', 'Name can only contain letters and spaces');
         isValid = false;
     }
 
-    // Email validation
-    if (!isValidEmail(email)) {
-        showError('email', 'Please enter a valid email address');
+    // Email validation (required) - Enhanced validation
+    if (!email) {
+        showError('email', 'Email is required');
+        isValid = false;
+    } else if (!isValidEmail(email)) {
+        showError('email', 'Please enter a valid email address (e.g., name@example.com)');
         isValid = false;
     }
 
-    // Phone validation (optional field)
-    if (phone && !/^[0-9+\-\s()]+$/.test(phone)) {
-        showError('phone', 'Please enter a valid phone number');
+    // Phone validation (required) - Enhanced validation
+    if (!phone) {
+        showError('phone', 'Phone number is required');
+        isValid = false;
+    } else if (!isValidPhone(phone)) {
+        showError('phone', 'Please enter a valid phone number (6-15 digits, numbers only)');
         isValid = false;
     }
 
-    // Message validation
-    if (message.length < 10) {
-        showError('message', 'Message must be at least 10 characters long');
+    // Message validation (required)
+    if (!message || message.length < 10) {
+        showError('message', 'Message is required and must be at least 10 characters long');
         isValid = false;
     } else if (message.length > 1000) {
         showError('message', 'Message must not exceed 1000 characters');
@@ -295,12 +301,46 @@ function validateForm() {
     return isValid;
 }
 
+// Modal functions
+function showModal() {
+    const modal = document.getElementById('successModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.classList.add('show');
+    }
+}
+
+function closeModal() {
+    const modal = document.getElementById('successModal');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    }
+}
+
+// Enhanced email validation
+function isValidEmail(email) {
+    // More strict email validation
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+}
+
+// Enhanced phone validation
+function isValidPhone(phone) {
+    // Remove spaces and check if it's only digits
+    const cleanPhone = phone.replace(/\s/g, '');
+    // Must be between 6 and 15 digits
+    return /^[0-9]{6,15}$/.test(cleanPhone);
+}
+
 contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Always prevent default submission
 
     // Check honeypot (spam protection)
-    const honeypot = contactForm.querySelector('input[name="honeypot"]').value;
-    if (honeypot) {
+    const honeypot = contactForm.querySelector('input[name="bot-field"]');
+    if (honeypot && honeypot.value) {
         console.log('Spam detected');
         return; // Silent fail for bots
     }
@@ -322,48 +362,47 @@ contactForm.addEventListener('submit', async (e) => {
         return;
     }
 
-    // Sanitize inputs
-    const formData = {
-        name: sanitizeInput(document.getElementById('name').value.trim()),
-        email: sanitizeInput(document.getElementById('email').value.trim()),
-        phone: sanitizeInput(document.getElementById('phone').value.trim()),
-        message: sanitizeInput(document.getElementById('message').value.trim())
-    };
-
     // Show loading state
     const submitBtn = document.getElementById('submitBtn');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Sending...';
+    const btnText = submitBtn.querySelector('.btn-text');
+    const btnLoading = submitBtn.querySelector('.btn-loading');
+
+    if (btnText && btnLoading) {
+        btnText.style.display = 'none';
+        btnLoading.style.display = 'inline';
+    }
     submitBtn.disabled = true;
 
-    try {
-        // Record submission for rate limiting
-        rateLimiter.recordSubmission();
+    // Record submission for rate limiting
+    rateLimiter.recordSubmission();
 
-        // Here you would typically send the form data to a server
-        // For now, we'll simulate a successful submission
-        await new Promise(resolve => setTimeout(resolve, 1500));
+    // Simulate form submission (for testing)
+    // In production, this will be handled by Netlify
+    setTimeout(() => {
+        // Show success modal
+        showModal();
 
-        // Show success message
-        alert('Thank you for your message! We will get back to you soon.');
+        // Reset form
         contactForm.reset();
         clearErrors();
-    } catch (error) {
-        // Show error message
-        alert('Sorry, there was an error sending your message. Please try again or contact us directly.');
-    } finally {
+
         // Reset button state
-        submitBtn.textContent = originalText;
+        if (btnText && btnLoading) {
+            btnText.style.display = 'inline';
+            btnLoading.style.display = 'none';
+        }
         submitBtn.disabled = false;
-    }
+    }, 1500);
 });
 
 // Real-time validation
 document.getElementById('name').addEventListener('blur', function() {
     const name = this.value.trim();
-    if (name && name.length < 2) {
+    if (!name) {
+        showError('name', 'Name is required');
+    } else if (name.length < 2) {
         showError('name', 'Name must be at least 2 characters long');
-    } else if (name && !/^[A-Za-z\s]+$/.test(name)) {
+    } else if (!/^[A-Za-z\s]+$/.test(name)) {
         showError('name', 'Name can only contain letters and spaces');
     } else {
         document.getElementById('nameError').style.display = 'none';
@@ -372,10 +411,34 @@ document.getElementById('name').addEventListener('blur', function() {
 
 document.getElementById('email').addEventListener('blur', function() {
     const email = this.value.trim();
-    if (email && !isValidEmail(email)) {
-        showError('email', 'Please enter a valid email address');
+    if (!email) {
+        showError('email', 'Email is required');
+    } else if (!isValidEmail(email)) {
+        showError('email', 'Please enter a valid email address (e.g., name@example.com)');
     } else {
         document.getElementById('emailError').style.display = 'none';
+    }
+});
+
+document.getElementById('phone').addEventListener('blur', function() {
+    const phone = this.value.trim();
+    if (!phone) {
+        showError('phone', 'Phone number is required');
+    } else if (!isValidPhone(phone)) {
+        showError('phone', 'Please enter a valid phone number (6-15 digits, numbers only)');
+    } else {
+        document.getElementById('phoneError').style.display = 'none';
+    }
+});
+
+document.getElementById('message').addEventListener('blur', function() {
+    const message = this.value.trim();
+    if (!message) {
+        showError('message', 'Message is required');
+    } else if (message.length < 10) {
+        showError('message', 'Message must be at least 10 characters long');
+    } else {
+        document.getElementById('messageError').style.display = 'none';
     }
 });
 

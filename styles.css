@@ -817,8 +817,50 @@ body {
     position: relative;
 }
 
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 14px;
+}
+
+.phone-input-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+}
+
+.country-code-select {
+    flex: 0 0 auto;
+    width: 220px;
+    min-width: 220px;
+    max-width: 220px;
+    padding: 15px 12px;
+    border: 2px solid #E8E8E8;
+    border-radius: 12px;
+    font-family: var(--font-primary);
+    font-size: 14px;
+    transition: var(--transition);
+    background: #ffffff !important;
+    color: #1a1a2e !important;
+    cursor: pointer;
+}
+
+.country-code-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+}
+
+.phone-input-wrapper input[type="tel"] {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
     width: 100%;
     padding: 15px 20px;
     border: 2px solid #E8E8E8;
@@ -826,7 +868,15 @@ body {
     font-family: var(--font-primary);
     font-size: 15px;
     transition: var(--transition);
-    background: var(--white);
+    background: #ffffff !important;
+    color: #1a1a2e !important;
+    -webkit-text-fill-color: #1a1a2e !important;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #999999 !important;
+    opacity: 1 !important;
 }
 
 .form-group input:focus,
@@ -834,6 +884,8 @@ body {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+    background: #ffffff !important;
+    color: #1a1a2e !important;
 }
 
 .form-group input:invalid:not(:placeholder-shown),
@@ -849,6 +901,16 @@ body {
 .form-group textarea {
     resize: vertical;
     min-height: 120px;
+}
+
+/* Force white background for autofill */
+.form-group input:-webkit-autofill,
+.form-group input:-webkit-autofill:hover,
+.form-group input:-webkit-autofill:focus,
+.form-group input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: #1a1a2e !important;
+    background-color: white !important;
 }
 
 /* Error Messages */
@@ -916,6 +978,101 @@ body {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
+}
+
+/* ===== SUCCESS MODAL ===== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 50px 40px;
+    border-radius: 24px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.4s ease;
+    position: relative;
+}
+
+.modal-icon {
+    margin: 0 auto 25px;
+    animation: scaleIn 0.5s ease 0.2s both;
+}
+
+.modal-icon svg {
+    display: block;
+    margin: 0 auto;
+}
+
+.modal-content h3 {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.modal-content p {
+    font-size: 16px;
+    color: var(--text-light);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.modal-content .btn {
+    min-width: 150px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* ===== FOOTER ===== */
@@ -1206,6 +1363,15 @@ body {
 
     .contact-form {
         padding: 30px 20px;
+    }
+
+    .phone-input-wrapper {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .country-code-select {
+        width: 100%;
     }
 
     .hero-buttons {
