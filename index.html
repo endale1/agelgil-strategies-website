@@ -108,18 +108,23 @@
             width: auto !important;
         }
 
-        /* Force modal to show as OVERLAY when .show class is added */
+        /* Force modal to show as PERFECTLY CENTERED OVERLAY */
         #successModal {
             display: none !important;
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
             z-index: 99999 !important;
             background: rgba(0, 0, 0, 0.7) !important;
             align-items: center !important;
             justify-content: center !important;
+            margin: 0 !important;
+            padding: 20px !important;
+            box-sizing: border-box !important;
         }
 
         #successModal.show {
@@ -136,6 +141,9 @@
             border-radius: 24px !important;
             max-width: 500px !important;
             width: 90% !important;
+            margin: auto !important;
+            text-align: center !important;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
         }
 
         /* Ensure submit button is clickable - MAXIMUM PRIORITY */
@@ -176,6 +184,17 @@
     </style>
 </head>
 <body>
+    <!-- Hidden form for Netlify detection (required for JavaScript forms) -->
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+        <input type="hidden" name="form-name" value="contact" />
+        <input type="text" name="bot-field" />
+        <input type="text" name="name" />
+        <input type="email" name="email" />
+        <input type="text" name="countryCode" />
+        <input type="tel" name="phone" />
+        <textarea name="message"></textarea>
+    </form>
+
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="container">
@@ -515,9 +534,9 @@
                         <a href="#" aria-label="Twitter" rel="noopener noreferrer" target="_blank"><i class="fab fa-twitter"></i></a>
                     </div>
                 </div>
-                <form class="contact-form" id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+                <form class="contact-form" id="contactForm" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/">
                     <!-- Required hidden field for Netlify -->
-                    <input type="hidden" name="form-name" value="contact">
+                    <input type="hidden" name="form-name" value="contact" />
 
                     <!-- Honeypot field for spam protection (hidden from users) -->
                     <div style="display:none">
