@@ -65,6 +65,57 @@
 
     <!-- Favicon (add your favicon files) -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- CRITICAL INLINE STYLES - FORCE FORM STYLING -->
+    <style>
+        /* Force all inputs to have white background and dark text */
+        input, textarea, select,
+        #name, #email, #phone, #message, #countryCode {
+            background: white !important;
+            background-color: white !important;
+            background-image: none !important;
+            color: #1a1a2e !important;
+            -webkit-text-fill-color: #1a1a2e !important;
+            -webkit-box-shadow: 0 0 0 1000px white inset !important;
+        }
+
+        /* Force placeholder color */
+        input::placeholder, textarea::placeholder {
+            color: #999999 !important;
+            -webkit-text-fill-color: #999999 !important;
+            opacity: 1 !important;
+        }
+
+        /* Force phone wrapper to display side-by-side */
+        .phone-input-wrapper {
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 10px !important;
+            width: 100% !important;
+        }
+
+        /* Force country dropdown width */
+        #countryCode, select#countryCode {
+            flex: 0 0 220px !important;
+            width: 220px !important;
+            min-width: 220px !important;
+            max-width: 220px !important;
+        }
+
+        /* Force phone input to take remaining space */
+        #phone, input#phone {
+            flex: 1 !important;
+            width: auto !important;
+        }
+
+        /* Force modal to show when .show class is added */
+        #successModal.show {
+            display: flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 99999 !important;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
