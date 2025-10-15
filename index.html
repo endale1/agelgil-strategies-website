@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 
     <!-- SEO Meta Tags -->
     <meta name="description" content="Agelgil Strategies - We don't just build brands, we build legacies. Full-service digital marketing and branding agency in Ethiopia.">
@@ -68,6 +68,16 @@
 
     <!-- CRITICAL INLINE STYLES - FORCE FORM STYLING -->
     <style>
+        /* Prevent horizontal scrolling on mobile */
+        html, body {
+            overflow-x: hidden !important;
+            max-width: 100vw !important;
+        }
+
+        * {
+            box-sizing: border-box !important;
+        }
+
         /* Force all inputs to have white background and dark text */
         input, textarea, select,
         #name, #email, #phone, #message, #countryCode {
@@ -86,26 +96,49 @@
             opacity: 1 !important;
         }
 
-        /* Force phone wrapper to display side-by-side */
+        /* Force phone wrapper to display properly */
         .phone-input-wrapper {
             display: flex !important;
-            flex-direction: row !important;
             gap: 10px !important;
             width: 100% !important;
         }
 
-        /* Force country dropdown width */
-        #countryCode, select#countryCode {
-            flex: 0 0 220px !important;
-            width: 220px !important;
-            min-width: 220px !important;
-            max-width: 220px !important;
+        /* Desktop: side-by-side layout */
+        @media (min-width: 577px) {
+            .phone-input-wrapper {
+                flex-direction: row !important;
+            }
+
+            #countryCode, select#countryCode {
+                flex: 0 0 220px !important;
+                width: 220px !important;
+                min-width: 220px !important;
+                max-width: 220px !important;
+            }
+
+            #phone, input#phone {
+                flex: 1 !important;
+                width: auto !important;
+            }
         }
 
-        /* Force phone input to take remaining space */
-        #phone, input#phone {
-            flex: 1 !important;
-            width: auto !important;
+        /* Mobile: stacked layout */
+        @media (max-width: 576px) {
+            .phone-input-wrapper {
+                flex-direction: column !important;
+                gap: 15px !important;
+            }
+
+            #countryCode, select#countryCode {
+                width: 100% !important;
+                max-width: 100% !important;
+                flex: none !important;
+            }
+
+            #phone, input#phone {
+                width: 100% !important;
+                flex: none !important;
+            }
         }
 
         /* Force modal to show as PERFECTLY CENTERED OVERLAY */
@@ -144,6 +177,38 @@
             margin: auto !important;
             text-align: center !important;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        /* Mobile modal adjustments */
+        @media (max-width: 576px) {
+            #successModal .modal-content {
+                width: 90% !important;
+                max-width: 90% !important;
+                padding: 40px 25px !important;
+                margin: 15px !important;
+                border-radius: 20px !important;
+            }
+
+            #successModal .modal-icon svg {
+                width: 60px !important;
+                height: 60px !important;
+            }
+
+            #successModal h3 {
+                font-size: 24px !important;
+                margin: 20px 0 15px !important;
+            }
+
+            #successModal p {
+                font-size: 14px !important;
+                line-height: 1.6 !important;
+                margin-bottom: 25px !important;
+            }
+
+            #successModal .btn {
+                padding: 12px 30px !important;
+                font-size: 14px !important;
+            }
         }
 
         /* Ensure submit button is clickable - MAXIMUM PRIORITY */

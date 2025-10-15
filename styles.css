@@ -1506,25 +1506,49 @@ select#countryCode {
     border: 2px solid #E8E8E8 !important;
 }
 
-/* Force phone wrapper layout */
-.phone-input-wrapper {
-    display: flex !important;
-    flex-direction: row !important;
+/* Force phone wrapper layout - DESKTOP ONLY */
+@media (min-width: 577px) {
+    .phone-input-wrapper {
+        display: flex !important;
+        flex-direction: row !important;
+    }
+
+    /* Force country code width */
+    #countryCode,
+    select#countryCode {
+        flex: 0 0 220px !important;
+        width: 220px !important;
+        max-width: 220px !important;
+    }
+
+    /* Force phone input width */
+    #phone,
+    input#phone {
+        flex: 1 !important;
+        width: auto !important;
+    }
 }
 
-/* Force country code width */
-#countryCode,
-select#countryCode {
-    flex: 0 0 220px !important;
-    width: 220px !important;
-    max-width: 220px !important;
-}
+/* Mobile phone wrapper - STACK VERTICALLY */
+@media (max-width: 576px) {
+    .phone-input-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
 
-/* Force phone input width */
-#phone,
-input#phone {
-    flex: 1 !important;
-    width: auto !important;
+    #countryCode,
+    select#countryCode {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: none !important;
+    }
+
+    #phone,
+    input#phone {
+        width: 100% !important;
+        flex: none !important;
+    }
 }
 
 /* Force modal display */
@@ -1532,4 +1556,27 @@ input#phone {
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
+}
+
+/* Mobile modal adjustments */
+@media (max-width: 576px) {
+    #successModal .modal-content {
+        width: 95% !important;
+        max-width: 95% !important;
+        padding: 40px 25px !important;
+        margin: 20px !important;
+    }
+
+    #successModal .modal-icon svg {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    #successModal h3 {
+        font-size: 24px !important;
+    }
+
+    #successModal p {
+        font-size: 14px !important;
+    }
 }
