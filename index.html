@@ -714,11 +714,16 @@
                         Please wait before sending another message.
                     </div>
 
-                    <button type="submit" class="btn btn-primary" id="submitBtn" onclick="console.log('Button clicked via onclick!'); return true;">
+                    <button type="button" class="btn btn-primary" id="submitBtn" style="pointer-events: auto !important; cursor: pointer !important; z-index: 9999 !important; position: relative !important;">
                         <span class="btn-text">Send Message</span>
                         <span class="btn-loading" style="display:none;">Sending...</span>
                     </button>
                 </form>
+
+                <!-- Test button to verify clicks work -->
+                <button type="button" onclick="alert('Test button works!'); console.log('Test button clicked!');" style="margin-top: 10px; padding: 10px 20px; background: red; color: white; border: none; cursor: pointer; border-radius: 8px;">
+                    TEST BUTTON - Click Me
+                </button>
 
                 <!-- Success Modal -->
                 <div id="successModal" class="modal" style="display:none;">
@@ -764,61 +769,100 @@
 
     <script src="script.js"></script>
 
-    <!-- EMERGENCY BUTTON FIX - Direct inline script -->
+    <!-- SIMPLE DIRECT BUTTON HANDLER -->
     <script>
-        console.log('=== EMERGENCY BUTTON FIX LOADED ===');
+        console.log('=== SIMPLE BUTTON HANDLER LOADING ===');
 
-        // Wait for DOM to be ready
-        window.addEventListener('load', function() {
-            console.log('Page fully loaded, checking button...');
-
-            const btn = document.getElementById('submitBtn');
-            console.log('Submit button element:', btn);
-
-            if (btn) {
-                console.log('Button found!');
-
-                // Test if button is visible and clickable
-                const rect = btn.getBoundingClientRect();
-                console.log('Button position:', {
-                    top: rect.top,
-                    left: rect.left,
-                    width: rect.width,
-                    height: rect.height
-                });
-
-                const styles = window.getComputedStyle(btn);
-                console.log('Button styles:', {
-                    display: styles.display,
-                    visibility: styles.visibility,
-                    opacity: styles.opacity,
-                    pointerEvents: styles.pointerEvents,
-                    zIndex: styles.zIndex,
-                    cursor: styles.cursor
-                });
-
-                // Check if anything is covering the button
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-                const elementAtPoint = document.elementFromPoint(centerX, centerY);
-                console.log('Element at button center:', elementAtPoint);
-
-                if (elementAtPoint !== btn && !btn.contains(elementAtPoint)) {
-                    console.warn('⚠️ WARNING: Something is covering the button!');
-                    console.warn('Covering element:', elementAtPoint);
-                    console.warn('Covering element classes:', elementAtPoint.className);
-                    console.warn('Covering element ID:', elementAtPoint.id);
-                }
-
-                // Add test click handler
-                btn.addEventListener('click', function(e) {
-                    console.log('✅ BUTTON CLICK DETECTED!');
-                    console.log('Click event:', e);
-                }, true);
-
-                console.log('✅ Emergency button fix complete');
+        // Function to show modal
+        function showSuccessModal() {
+            console.log('Showing modal...');
+            const modal = document.getElementById('successModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.style.visibility = 'visible';
+                modal.style.opacity = '1';
+                modal.classList.add('show');
+                console.log('Modal displayed!');
             } else {
-                console.error('❌ ERROR: Submit button not found!');
+                alert('Thank you! Your message has been sent successfully. We\'ll get back to you soon.');
+            }
+        }
+
+        // Function to close modal
+        function closeModal() {
+            const modal = document.getElementById('successModal');
+            if (modal) {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    modal.style.visibility = 'hidden';
+                    modal.style.opacity = '0';
+                }, 300);
+            }
+        }
+
+        // Make closeModal global
+        window.closeModal = closeModal;
+
+        // Wait for page to load
+        window.addEventListener('load', function() {
+            console.log('Page loaded, attaching button handler...');
+
+            const submitBtn = document.getElementById('submitBtn');
+            console.log('Submit button:', submitBtn);
+
+            if (submitBtn) {
+                // Remove type="submit" behavior
+                submitBtn.type = 'button';
+
+                // Add direct click handler
+                submitBtn.onclick = function(e) {
+                    console.log('=== BUTTON CLICKED ===');
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Get form values
+                    const name = document.getElementById('name').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    const phone = document.getElementById('phone').value.trim();
+                    const message = document.getElementById('message').value.trim();
+
+                    console.log('Form values:', {name, email, phone, message});
+
+                    // Simple validation
+                    if (!name || !email || !phone || !message) {
+                        alert('Please fill in all fields!');
+                        return false;
+                    }
+
+                    // Show loading
+                    const btnText = submitBtn.querySelector('.btn-text');
+                    const btnLoading = submitBtn.querySelector('.btn-loading');
+                    if (btnText) btnText.style.display = 'none';
+                    if (btnLoading) btnLoading.style.display = 'inline';
+                    submitBtn.disabled = true;
+
+                    console.log('Showing modal in 1.5 seconds...');
+
+                    // Show modal after delay
+                    setTimeout(function() {
+                        showSuccessModal();
+
+                        // Reset form
+                        document.getElementById('contactForm').reset();
+
+                        // Reset button
+                        if (btnText) btnText.style.display = 'inline';
+                        if (btnLoading) btnLoading.style.display = 'none';
+                        submitBtn.disabled = false;
+                    }, 1500);
+
+                    return false;
+                };
+
+                console.log('✅ Button handler attached!');
+            } else {
+                console.error('❌ Submit button not found!');
             }
         });
     </script>
