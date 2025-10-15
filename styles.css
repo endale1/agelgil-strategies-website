@@ -842,20 +842,37 @@ body {
     font-family: var(--font-primary);
     font-size: 14px;
     transition: var(--transition);
+    background-color: #ffffff !important;
     background: #ffffff !important;
     color: #1a1a2e !important;
+    -webkit-text-fill-color: #1a1a2e !important;
     cursor: pointer;
+    appearance: auto;
+    -webkit-appearance: menulist;
+    -moz-appearance: menulist;
 }
 
 .country-code-select:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+}
+
+.country-code-select option {
+    background-color: #ffffff;
+    color: #1a1a2e;
+    padding: 10px;
 }
 
 .phone-input-wrapper input[type="tel"] {
     flex: 1 1 auto;
     min-width: 0;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #1a1a2e !important;
+    -webkit-text-fill-color: #1a1a2e !important;
 }
 
 .form-group input,
@@ -868,6 +885,7 @@ body {
     font-family: var(--font-primary);
     font-size: 15px;
     transition: var(--transition);
+    background-color: #ffffff !important;
     background: #ffffff !important;
     color: #1a1a2e !important;
     -webkit-text-fill-color: #1a1a2e !important;
@@ -877,15 +895,19 @@ body {
 .form-group textarea::placeholder {
     color: #999999 !important;
     opacity: 1 !important;
+    -webkit-text-fill-color: #999999 !important;
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+    background-color: #ffffff !important;
     background: #ffffff !important;
     color: #1a1a2e !important;
+    -webkit-text-fill-color: #1a1a2e !important;
 }
 
 .form-group input:invalid:not(:placeholder-shown),

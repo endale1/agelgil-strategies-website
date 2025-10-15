@@ -303,10 +303,17 @@ function validateForm() {
 
 // Modal functions
 function showModal() {
+    console.log('showModal called');
     const modal = document.getElementById('successModal');
+    console.log('Modal element:', modal);
     if (modal) {
         modal.style.display = 'flex';
         modal.classList.add('show');
+        console.log('Modal displayed');
+    } else {
+        console.error('Modal element not found!');
+        // Fallback alert if modal not found
+        alert('Thank you! Your message has been sent successfully. We\'ll get back to you soon.');
     }
 }
 
@@ -319,6 +326,9 @@ function closeModal() {
         }, 300);
     }
 }
+
+// Make closeModal available globally
+window.closeModal = closeModal;
 
 // Enhanced email validation
 function isValidEmail(email) {
@@ -337,6 +347,7 @@ function isValidPhone(phone) {
 
 contactForm.addEventListener('submit', async (e) => {
     e.preventDefault(); // Always prevent default submission
+    console.log('Form submitted');
 
     // Check honeypot (spam protection)
     const honeypot = contactForm.querySelector('input[name="bot-field"]');
@@ -346,12 +357,16 @@ contactForm.addEventListener('submit', async (e) => {
     }
 
     // Validate form
+    console.log('Validating form...');
     if (!validateForm()) {
+        console.log('Validation failed');
         return;
     }
+    console.log('Validation passed');
 
     // Check rate limiting
     if (!rateLimiter.canSubmit()) {
+        console.log('Rate limit exceeded');
         const remaining = rateLimiter.getRemainingTime();
         const rateLimitMsg = document.getElementById('rateLimitMessage');
         rateLimitMsg.textContent = `Please wait ${remaining} seconds before sending another message.`;
@@ -363,6 +378,7 @@ contactForm.addEventListener('submit', async (e) => {
     }
 
     // Show loading state
+    console.log('Showing loading state...');
     const submitBtn = document.getElementById('submitBtn');
     const btnText = submitBtn.querySelector('.btn-text');
     const btnLoading = submitBtn.querySelector('.btn-loading');
@@ -378,7 +394,9 @@ contactForm.addEventListener('submit', async (e) => {
 
     // Simulate form submission (for testing)
     // In production, this will be handled by Netlify
+    console.log('Starting timeout for modal...');
     setTimeout(() => {
+        console.log('Timeout complete, showing modal...');
         // Show success modal
         showModal();
 
