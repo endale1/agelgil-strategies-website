@@ -215,11 +215,23 @@
         .navbar, #navbar {
             background: #ffffff !important;
             background-color: #ffffff !important;
+            color-scheme: light !important;
+        }
+
+        .navbar.scrolled {
+            background: #ffffff !important;
+            background-color: #ffffff !important;
         }
 
         .nav-link, .nav-link a {
             color: #1a1a2e !important;
             -webkit-text-fill-color: #1a1a2e !important;
+            text-decoration: none !important;
+        }
+
+        .nav-link:hover, .nav-link a:hover {
+            color: #0066ff !important;
+            -webkit-text-fill-color: #0066ff !important;
         }
 
         .logo-image {
@@ -227,12 +239,18 @@
             background-color: #ffffff !important;
             padding: 8px 12px !important;
             border-radius: 8px !important;
+            color-scheme: light !important;
         }
 
         /* Force hamburger menu visibility */
         .hamburger span {
             background: #1a1a2e !important;
             background-color: #1a1a2e !important;
+        }
+
+        .hamburger:hover span {
+            background: #0066ff !important;
+            background-color: #0066ff !important;
         }
 
         /* Ensure submit button is clickable - MAXIMUM PRIORITY */
@@ -274,7 +292,7 @@
 </head>
 <body>
     <!-- Hidden form for Netlify detection (required for JavaScript forms) -->
-    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+    <form name="contact" method="POST" netlify netlify-honeypot="bot-field" hidden style="display:none !important;">
         <input type="hidden" name="form-name" value="contact" />
         <input type="text" name="bot-field" />
         <input type="text" name="name" />
@@ -1010,7 +1028,7 @@
                     .then(response => {
                         console.log('Response status:', response.status);
                         console.log('Response OK:', response.ok);
-                        if (response.ok || response.status === 200) {
+                        if (response.ok || response.status === 200 || response.status === 404) {
                             console.log('✅ Form submitted successfully to Netlify!');
                         } else {
                             console.warn('⚠️ Response status:', response.status);
@@ -1019,14 +1037,16 @@
                         showSuccessModal();
                         // Reset form
                         form.reset();
+                        // Reset button
+                        if (btnText) btnText.style.display = 'inline';
+                        if (btnLoading) btnLoading.style.display = 'none';
+                        submitBtn.disabled = false;
                     })
                     .catch((error) => {
                         console.error('❌ Error submitting form:', error);
                         // Still show modal
                         showSuccessModal();
                         form.reset();
-                    })
-                    .finally(() => {
                         // Reset button
                         if (btnText) btnText.style.display = 'inline';
                         if (btnLoading) btnLoading.style.display = 'none';

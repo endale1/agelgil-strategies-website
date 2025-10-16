@@ -77,6 +77,7 @@ body {
     /* Force solid white background for dark mode compatibility */
     background: #ffffff !important;
     background-color: #ffffff !important;
+    color-scheme: light !important;
     backdrop-filter: blur(20px);
     box-shadow: 0 2px 25px rgba(0, 102, 255, 0.08);
     z-index: 1000;
@@ -87,6 +88,7 @@ body {
 .navbar.scrolled {
     background: #ffffff !important;
     background-color: #ffffff !important;
+    color-scheme: light !important;
     box-shadow: 0 4px 30px rgba(0, 102, 255, 0.12);
     border-bottom-color: rgba(0, 102, 255, 0.18);
 }
@@ -115,6 +117,7 @@ body {
     /* Force white background for logo visibility in dark mode */
     background: #ffffff !important;
     background-color: #ffffff !important;
+    color-scheme: light !important;
     padding: 8px 12px;
     border-radius: 8px;
     object-fit: contain;
@@ -154,6 +157,7 @@ body {
     position: relative;
     transition: var(--transition);
     -webkit-text-fill-color: #1a1a2e !important;
+    color-scheme: light !important;
 }
 
 .nav-link::after {
@@ -169,7 +173,8 @@ body {
 
 .nav-link:hover,
 .nav-link.active {
-    color: var(--primary-color);
+    color: #0066ff !important;
+    -webkit-text-fill-color: #0066ff !important;
 }
 
 .nav-link:hover::after,
@@ -1573,5 +1578,45 @@ select#countryCode {
 
     #successModal p {
         font-size: 14px !important;
+    }
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+@media (prefers-color-scheme: dark) {
+    .navbar, #navbar {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        color-scheme: light !important;
+    }
+
+    .navbar.scrolled {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+    }
+
+    .nav-link, .nav-link a {
+        color: #1a1a2e !important;
+        -webkit-text-fill-color: #1a1a2e !important;
+    }
+
+    .nav-link:hover, .nav-link.active {
+        color: #0066ff !important;
+        -webkit-text-fill-color: #0066ff !important;
+    }
+
+    .logo-image {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
+        color-scheme: light !important;
+    }
+
+    .hamburger span {
+        background: #1a1a2e !important;
+        background-color: #1a1a2e !important;
+    }
+
+    .hamburger:hover span {
+        background: #0066ff !important;
+        background-color: #0066ff !important;
     }
 }
