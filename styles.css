@@ -74,7 +74,9 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 251, 255, 0.98) 100%);
+    /* Force solid white background for dark mode compatibility */
+    background: #ffffff !important;
+    background-color: #ffffff !important;
     backdrop-filter: blur(20px);
     box-shadow: 0 2px 25px rgba(0, 102, 255, 0.08);
     z-index: 1000;
@@ -83,7 +85,8 @@ body {
 }
 
 .navbar.scrolled {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.99) 0%, rgba(248, 251, 255, 0.99) 100%);
+    background: #ffffff !important;
+    background-color: #ffffff !important;
     box-shadow: 0 4px 30px rgba(0, 102, 255, 0.12);
     border-bottom-color: rgba(0, 102, 255, 0.18);
 }
@@ -109,23 +112,14 @@ body {
     width: auto;
     max-height: 76.5px;
     transition: var(--transition);
-    /* Remove white background - multiple methods for compatibility */
-    mix-blend-mode: multiply;
-    background: transparent;
-    /* Alternative: Use CSS filter to remove white */
-    filter: brightness(1.1) contrast(1.1);
+    /* Force white background for logo visibility in dark mode */
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    padding: 8px 12px;
+    border-radius: 8px;
     object-fit: contain;
     display: block;
-}
-
-/* For browsers that don't support mix-blend-mode */
-@supports not (mix-blend-mode: multiply) {
-    .logo-image {
-        /* Fallback: clip white colors */
-        background: white;
-        padding: 5px;
-        border-radius: 8px;
-    }
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .logo-image:hover {
@@ -154,11 +148,12 @@ body {
 
 .nav-link {
     text-decoration: none;
-    color: var(--text-dark);
+    color: #1a1a2e !important;
     font-weight: 500;
     font-size: 16px;
     position: relative;
     transition: var(--transition);
+    -webkit-text-fill-color: #1a1a2e !important;
 }
 
 .nav-link::after {
