@@ -302,7 +302,7 @@
 </head>
 <body>
     <!-- Hidden form for Netlify detection (required for JavaScript forms) -->
-    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden style="display:none !important;">
+    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="position: absolute; left: -9999px; visibility: hidden; height: 0; width: 0; overflow: hidden;">
         <input type="hidden" name="form-name" value="contact" />
         <input type="text" name="bot-field" />
         <input type="text" name="name" />
@@ -1030,7 +1030,7 @@
                     // Log form data for debugging
                     console.log('Form data being sent:', formDataObj);
 
-                    fetch('/', {
+                    fetch('/?form=contact', {
                         method: 'POST',
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: encode(formDataObj)

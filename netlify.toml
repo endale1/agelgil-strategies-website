@@ -2,19 +2,11 @@
 
 # Build settings
 [build]
-  command = "echo 'Static site - no build needed'"
   publish = "."
 
 # Form settings
 [[forms]]
   name = "contact"
   method = "POST"
-  action = "/success"
   honeypot = "bot-field"
-
-# Redirects
-[[redirects]]
-  from = "/success"
-  to = "/"
-  status = 200
 
