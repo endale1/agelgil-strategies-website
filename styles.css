@@ -79,6 +79,8 @@ body {
     background: #ffffff !important;
     background-color: #ffffff !important;
     color-scheme: light !important;
+    forced-color-adjust: none !important;
+    -webkit-appearance: none !important;
     backdrop-filter: blur(20px);
     box-shadow: 0 2px 25px rgba(0, 102, 255, 0.08);
     z-index: 1000;
@@ -90,6 +92,7 @@ body {
     background: #ffffff !important;
     background-color: #ffffff !important;
     color-scheme: light !important;
+    forced-color-adjust: none !important;
     box-shadow: 0 4px 30px rgba(0, 102, 255, 0.12);
     border-bottom-color: rgba(0, 102, 255, 0.18);
 }
@@ -119,6 +122,7 @@ body {
     background: #ffffff !important;
     background-color: #ffffff !important;
     color-scheme: light !important;
+    forced-color-adjust: none !important;
     padding: 8px 12px;
     border-radius: 8px;
     object-fit: contain;
@@ -159,6 +163,7 @@ body {
     transition: var(--transition);
     -webkit-text-fill-color: #1a1a2e !important;
     color-scheme: light !important;
+    forced-color-adjust: none !important;
 }
 
 .nav-link::after {
@@ -176,6 +181,7 @@ body {
 .nav-link.active {
     color: #0066ff !important;
     -webkit-text-fill-color: #0066ff !important;
+    forced-color-adjust: none !important;
 }
 
 .nav-link:hover::after,
