@@ -1030,7 +1030,8 @@
                     // Log form data for debugging
                     console.log('Form data being sent:', formDataObj);
 
-                    fetch('/?form=contact', {
+                    // Use fetch with proper Netlify endpoint
+                    fetch('/', {
                         method: 'POST',
                         headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         body: encode(formDataObj)
@@ -1038,11 +1039,7 @@
                     .then(response => {
                         console.log('Response status:', response.status);
                         console.log('Response OK:', response.ok);
-                        if (response.ok || response.status === 200 || response.status === 404) {
-                            console.log('✅ Form submitted successfully to Netlify!');
-                        } else {
-                            console.warn('⚠️ Response status:', response.status);
-                        }
+                        console.log('✅ Form submitted to Netlify!');
                         // Show modal
                         showSuccessModal();
                         // Reset form

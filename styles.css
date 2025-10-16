@@ -123,11 +123,13 @@ body {
     background-color: #ffffff !important;
     color-scheme: light !important;
     forced-color-adjust: none !important;
-    padding: 8px 12px;
-    border-radius: 8px;
+    padding: 10px 15px !important;
+    border-radius: 8px !important;
     object-fit: contain;
     display: block;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1) !important;
+    border: 2px solid #f0f0f0 !important;
+    filter: contrast(1.1) brightness(1.05) !important;
 }
 
 .logo-image:hover {
@@ -1627,6 +1629,10 @@ select#countryCode {
         background-color: #ffffff !important;
         color-scheme: light !important;
         forced-color-adjust: none !important;
+        padding: 10px 15px !important;
+        border: 2px solid #f0f0f0 !important;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1) !important;
+        filter: contrast(1.1) brightness(1.05) !important;
     }
 
     .hamburger span {
