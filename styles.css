@@ -6,6 +6,7 @@
 }
 
 :root {
+    color-scheme: light !important;
     /* Color Palette - Premium & Professional */
     --primary-color: #0066FF;
     --primary-dark: #0052CC;
