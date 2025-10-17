@@ -1647,3 +1647,25 @@ select#countryCode {
         forced-color-adjust: none !important;
     }
 }
+
+/* ===== DARK MODE LOGO FIX ===== */
+@media (prefers-color-scheme: dark) {
+    .logo-image {
+        /* Remove white background in dark mode */
+        background: transparent !important;
+        background-color: transparent !important;
+        padding: 0 !important;
+        /* Add subtle light border/outline for visibility */
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+        padding: 8px 12px !important;
+        /* Add slight glow effect */
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-image:hover {
+        /* Enhanced glow on hover in dark mode */
+        box-shadow: 0 0 12px rgba(0, 217, 181, 0.3);
+        border-color: rgba(0, 217, 181, 0.4);
+    }
+}
