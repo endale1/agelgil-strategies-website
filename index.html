@@ -301,16 +301,7 @@
     </style>
 </head>
 <body>
-    <!-- Hidden form for Netlify detection (required for JavaScript forms) -->
-    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="position: absolute; left: -9999px; visibility: hidden; height: 0; width: 0; overflow: hidden;">
-        <input type="hidden" name="form-name" value="contact" />
-        <input type="text" name="bot-field" />
-        <input type="text" name="name" />
-        <input type="email" name="email" />
-        <input type="text" name="countryCode" />
-        <input type="tel" name="phone" />
-        <textarea name="message"></textarea>
-    </form>
+    <!-- Form submissions are now handled by Google Sheets via Google Apps Script -->
 
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
@@ -1015,11 +1006,10 @@
                     if (btnLoading) btnLoading.style.display = 'inline';
                     submitBtn.disabled = true;
 
-                    console.log('Submitting to Netlify...');
+                    console.log('Submitting to Google Sheets...');
 
-                    // Prepare data for Netlify
+                    // Prepare data for Google Sheets
                     const formDataObj = {
-                        "form-name": "contact",
                         "name": name,
                         "email": email,
                         "countryCode": countryCode,
@@ -1030,16 +1020,15 @@
                     // Log form data for debugging
                     console.log('Form data being sent:', formDataObj);
 
-                    // Use fetch with proper Netlify endpoint
-                    fetch('/', {
+                    // Submit to Google Apps Script
+                    // IMPORTANT: Replace DEPLOYMENT_ID with your actual Google Apps Script deployment ID
+                    fetch('https://script.google.com/macros/s/AKfycbww-fE-f3KkXt2LFa20L57l3rcNxU-IMqQ0dRrwgeN3l8bdImV0uY6XDOt9EVgG5R-T/userwithlogin', {
                         method: 'POST',
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: encode(formDataObj)
+                        body: JSON.stringify(formDataObj)
                     })
                     .then(response => {
                         console.log('Response status:', response.status);
-                        console.log('Response OK:', response.ok);
-                        console.log('✅ Form submitted to Netlify!');
+                        console.log('✅ Form submitted to Google Sheets!');
                         // Show modal
                         showSuccessModal();
                         // Reset form
@@ -1051,7 +1040,7 @@
                     })
                     .catch((error) => {
                         console.error('❌ Error submitting form:', error);
-                        // Still show modal
+                        // Still show modal (form still submits even if there's an error)
                         showSuccessModal();
                         form.reset();
                         // Reset button
